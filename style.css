@@ -7,11 +7,12 @@ body {
 #container {
     display: grid;
     width: 480px;
-    height: 640px;
+    height: 650px;
     grid-template-columns: repeat(4, 100px);
     grid-template-rows: 120px repeat(5, 80px);
     grid-gap: 15px 10px;
     border-radius: 25px;
+    box-shadow: 5px 15px 10px #243742;
     background-color: #ea5f5c;
     justify-content: center;
     align-content: center;
