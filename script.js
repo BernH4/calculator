@@ -10,7 +10,7 @@ function updateDisplay(e) {
     let operator = e.target.textContent;
     //console.log(operator);
     //Check if pressed button is a Valid Number or "."
-    if (/[1-9.]/.test(operator)) display.textContent += operator;
+    if (/[0-9.]/.test(operator)) display.textContent += operator;
     else if (operator == "÷" || operator == "×" || operator == "-" || operator == "+") {
         display.textContent += ` ${operator} `;
     }
@@ -33,8 +33,27 @@ function updateDisplay(e) {
 
 function operate(operator, a, b, lastChar) {
     //TODO MATH
+    let result;
+    switch (operator) {
+        case "÷":
+          result = a / b;
+          break;
+        case "×":
+          result = a * b;
+          break;
+        case "-":
+          result = a - b;
+          break;
+        case "+":
+          result = +a + +b;
+          break;
+        default:
+          console.log("ERROR")
+          break;
+    }
+    display.textContent = result;
     console.log(lastChar);
-    if (/[÷×\-+]/.test(operator)) display.textContent += " " + lastChar; 
+    if (/[÷×\-+]/.test(operator)) display.textContent += " " + lastChar + " "; 
 }
 
 //function calculate() {
