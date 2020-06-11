@@ -12,16 +12,19 @@ function updateDisplay(e) {
     //Check if pressed button is a Valid Number or "."
     if (/[0-9.]/.test(operator)) display.textContent += operator;
     else if (operator == "÷" || operator == "×" || operator == "-" || operator == "+") {
-        display.textContent += operator;
+        if (display.textContent == "") display.textContent = `0 ${operator} `;
+        else display.textContent += ` ${operator} `;
     }
     else if (operator == "C") display.textContent = "";
-    else if (operator == "DEL") display.textContent = display.textContent.slice(0, -1);
+    else if (operator == "DEL") display.textContent = display.textContent.slice(-2,-1);
     //else if (operator == "=") calculate();
     
     opArr = display.textContent.match(/[÷×\-+]/g) || [];
+    console.log(opArr);
     if (opArr.length == 2 || operator == "=") {
-        const numbers = display.textContent.match(/\d+/g);
-        const lastChar = display.textContent.slice(-1);
+        const numbers = display.textContent.match(/[0-9]*\.?[0-9]+/g);
+        console.log(numbers);
+        const lastChar = display.textContent.slice(-2,-1);
         operate(opArr[0], numbers[0], numbers[1], lastChar); 
         //console.log(opArr);
     }
@@ -32,7 +35,6 @@ function updateDisplay(e) {
 
 
 function operate(operator, a, b, lastChar) {
-    //TODO MATH
     let result;
     switch (operator) {
         case "÷":
@@ -53,7 +55,7 @@ function operate(operator, a, b, lastChar) {
     }
     display.textContent = result;
     console.log(lastChar);
-    if (/[÷×\-+]/.test(lastChar)) display.textContent += lastChar;
+    if (/[÷×\-+]/.test(lastChar)) display.textContent += ` ${lastChar} `
 }
 
 //function calculate() {
