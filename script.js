@@ -2,12 +2,30 @@ const display = document.getElementById("display");
 const buttons = document.querySelectorAll('button');
 
 buttons.forEach((button) => {
-    button.addEventListener('click', (e) => updateDisplay(e));
+    button.addEventListener('click', e => updateDisplay(e.target.textContent));
 });
 
-function updateDisplay(e) {
-    let operator = e.target.textContent;
-    //console.log(operator);
+document.addEventListener('keydown', e => {
+    let key;
+    //Prevent quick search pop up when pressing / or *
+    e.preventDefault();
+    //Backspace
+    if (e.keyCode == 8) key = "DEL";
+    //Delete Button (germany: entf) 
+    else if (e.keyCode == 46) key = "C";
+    //Enter - Return
+    else if (e.keyCode == 13) key = "="; 
+    // * button on normal keyboard and numpad
+    else if (e.keyCode == 171 || e.keyCode == 106) key = "×";
+    // "/" button on normal keyboard and ÷ button on numpad
+    else if (e.keyCode == 55 || e.keyCode == 111) key = "÷";
+    //All numbers and the dot
+    else key = e.key;
+
+    updateDisplay(key);
+});
+
+function updateDisplay(operator) {
     //Check if pressed button is a Valid Number or "."
     if (/[0-9.]/.test(operator)) display.textContent += operator;
     else if (operator == "÷" || operator == "×" || operator == "-" || operator == "+") {
@@ -63,7 +81,9 @@ function operate(operator, a, b, lastChar) {
           display.textContent = "ERROR";
           break;
     }
-    display.textContent = result;
+    //slice does prevent the display from overflow, toFixed()does not work here because
+    //the digits before . can also overflow the display
+    display.textContent = result.toString().slice(0,14);
     //if the operate function was not triggered by "=" but by a operator concat that operator after the result
     if (/[÷×\-+]/.test(lastChar)) display.textContent += ` ${lastChar} `
 }
