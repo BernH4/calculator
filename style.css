@@ -73,7 +73,6 @@ button:active {
   transform: translateY(7px);
 }
 
-button::-moz-focus-inner {
-  border: 0;
+button:focus {
+    outline: none;
 }
-
