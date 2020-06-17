@@ -7,27 +7,42 @@ buttons.forEach((button) => {
 
 document.addEventListener('keydown', e => {
     let key;
-    //Prevent quick search pop up when pressing / or *
-    e.preventDefault();
-    //Backspace
-    if (e.keyCode == 8) key = "DEL";
-    //Delete Button (germany: entf) 
-    else if (e.keyCode == 46) key = "C";
-    //Enter - Return
-    else if (e.keyCode == 13) key = "="; 
-    // * button on normal keyboard and numpad
-    else if (e.keyCode == 171 || e.keyCode == 106) key = "×";
-    // "/" button on normal keyboard and ÷ button on numpad
-    else if (e.keyCode == 55 || e.keyCode == 111) key = "÷";
-    //All numbers and the dot
-    else key = e.key;
+    switch (e.keyCode) {
+        //Backspace
+        case 8:
+            key = "DEL";
+            break;
+        //Delete Button (germany: entf) 
+        case 46:
+            key = "C";
+            break;
+        //Enter - Return
+        case 13:
+            key = "=";
+            break;
+        // "*" button on normal keyboard and numpad
+        case 171:
+        case 106:
+            key = "×";
+            break;
+        // "/" button on normal keyboard and ÷ button on numpad
+        case 55:
+        case 111:
+            //does prevent quick search from opening up in firefox
+            e.preventDefault();
+            key = "÷";
+            break;
+        default:
+            //All numbers and the dot (+trash)
+            key = e.key;
+    }
 
     updateDisplay(key);
 });
 
 function updateDisplay(operator) {
-    //Check if pressed button is a Valid Number or "."
-    if (/[0-9.]/.test(operator)) display.textContent += operator;
+    //Check if pressed button is a one digit number or a dot (Excludes F12 for example)
+    if (/\b\d\b|\./.test(operator)) display.textContent += operator;
     else if (operator == "÷" || operator == "×" || operator == "-" || operator == "+") {
         //If an operator is pressed before any number input a "0" is put before the operator to make math possible
         if (display.textContent == "") display.textContent = `0 ${operator} `;
